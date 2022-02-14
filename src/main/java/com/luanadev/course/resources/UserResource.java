@@ -9,9 +9,10 @@ import com.luanadev.course.entities.User;
 
 
 @RestController /* recurso web implementado por um controlador rest */
-@RequestMapping(value = "/users")  /* nome do recurso */
+@RequestMapping(value = "/users")  /* nome/caminho do recurso */
 public class UserResource {
 	
+	/* Metodo endponint para acessar usuarios*/
 	@GetMapping
 	public ResponseEntity<User> findAll(){
 		User u = new User(1L, "Maria", "maria@gmail.com", "5564999999999", "123456");
