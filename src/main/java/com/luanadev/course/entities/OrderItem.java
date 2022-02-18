@@ -35,6 +35,7 @@ public class OrderItem implements Serializable{
 		return id.getOrder();
 	}
 	
+	/*Joga o order dentro do id*/
 	public void setOrder(Order order) {
 		id.setOrder(order);
 	}
