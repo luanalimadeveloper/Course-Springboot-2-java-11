@@ -1,37 +1,51 @@
 package com.luanadev.course.resources;
 
-import java.security.Provider.Service;
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.luanadev.course.entities.Product;
-import com.luanadev.course.services.ProductService;
+import com.luanadev.course.entities.User;
+import com.luanadev.course.services.UserService;
 
 @RestController /* recurso web implementado por um controlador rest */
 @RequestMapping(value = "/users") /* nome/caminho do recurso */
 public class UserResource {
 
 	@Autowired
-	private ProductService service;
+	private UserService service;
 
 	/* Metodo endponint para acessar usuarios */
 	@GetMapping
-	public ResponseEntity<List<Product>> findAll() {
-		List<Product> list = service.findAll();
+	public ResponseEntity<List<User>> findAll() {
+		List<User> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 
 	/* Metodo endponint para buscar usuarios por id */
 	@GetMapping(value = "/{id}") /* Minha requisicao aceita id dentro da URL */
-	public ResponseEntity<Product> findById(@PathVariable Long id) {
-		Product obj = service.findById(id);
+	public ResponseEntity<User> findById(@PathVariable Long id) {
+		User obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
+
+	@PostMapping /* Inserir novo recurso */  
+	public ResponseEntity<User> insert(@RequestBody User obj) {
+		/*@RequestBody - Json vai ser desserializado para objeto User*/
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).body(obj);
+	}
+	
+	
 
 }
