@@ -56,7 +56,7 @@ public class UserResource {
 		/*noContent() : resposta vazia (nao tem conteudo)*/
 	}
 	
-	/*Put método*/
+	/*Put método - Atualizar*/
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User obj){
 		obj = service.update(id, obj);
