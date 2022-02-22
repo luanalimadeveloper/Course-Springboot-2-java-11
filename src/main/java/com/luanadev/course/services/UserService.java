@@ -3,7 +3,8 @@ package com.luanadev.course.services;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.exception.DataException;
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -48,9 +49,15 @@ public class UserService {
 	/*id  para saber quem atualizar e obj para atualizar os dados*/
 	@SuppressWarnings("deprecation")
 	public User update(Long id, User obj) {
-		User entity = repository.getOne(id);
-		updateDate(entity, obj);
-		return repository.save(entity);
+		try {
+			User entity = repository.getOne(id);
+			updateDate(entity, obj);
+			return repository.save(entity);
+		}
+		catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
+		
 	}
 
 	private void updateDate(User entity, User obj) {
